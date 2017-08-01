@@ -1,0 +1,34 @@
+public class RNControlAPI {
+
+	private String token;
+	private String tokenExpires;
+	private Boolean authenticated;
+
+	public RNControlAPI(String username, String password) {
+		authenticated = false;
+		authenticated = authenticate(username, password);
+	}
+
+	private Boolean authenticate(String username, String password) {
+		Http http = new Http();
+		HttpRequest request = new HttpRequest();
+		request.setEndpoint('https://api.rncontrol.com/users/login');
+		request.setMethod('POST');
+		request.setHeader('Content-Type', 'application/json;charset=UTF-8');
+		request.setBody('{"username":"' + username + '", "password": "' + password + '"}');
+		HttpResponse response = http.send(request);
+		if (response.getStatusCode() == 200) {
+			Map<String, Object> results = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
+			token = (String) results.get('token');
+			tokenExpires = (String) results.get('tokenExpires');
+			return true;
+		}
+		return false;
+	}
+
+	private Boolean isAuthenticated() {
+		//TODO: Check tokenExpires
+		return authenticated;
+	}
+
+}
