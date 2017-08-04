@@ -1,0 +1,17 @@
+<apex:page controller="RNControlAPI">
+  <apex:form>
+    <apex:pageBlock title="Managed Routers" id="managed_routers">
+      <apex:pageBlockTable  value="{! routers }" var="rt">
+        <apex:column headerValue="Domain" value="{! rt.domain }"/>
+        <apex:column headerValue="Mac" value="{! rt.mac }"/>
+        <apex:column headerValue="Make" value="{! rt.make }"/>
+        <apex:column headerValue="Model" value="{! rt.model }"/>
+        <apex:column headerValue="Name" value="{! rt.name }"/>
+        <apex:column headerValue="Serial" value="{! rt.serial }"/>
+        <apex:column headerValue="Action">
+          <apex:outputlink value="{! rt.url }" target="_blank">View</apex:outputlink>
+        </apex:column>
+      </apex:pageBlockTable>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

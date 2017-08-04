@@ -3,10 +3,20 @@ public class RNControlAPI {
 	private String token;
 	private String tokenExpires;
 	private Boolean authenticated;
+	private List<RNControlRouter> routers;
 
-	public RNControlAPI(String username, String password) {
-		authenticated = false;
-		authenticated = authenticate(username, password);
+	public RNControlAPI() {
+		this.authenticated = false;
+		this.token = '';
+		this.tokenExpires = '';
+		this.routers = new List<RNControlRouter>();
+
+		User salesforce_user = [Select rncontrol_username__c, rncontrol_password__c From User Where Id = :UserInfo.getUserId() Limit 1];
+		String username = (String) salesforce_user.rncontrol_username__c;
+		String password = (String) salesforce_user.rncontrol_password__c;
+		if (username.length()>0 && password.length()>0) {
+			this.authenticated = this.authenticate(username, password);
+		}
 	}
 
 	private Boolean authenticate(String username, String password) {
@@ -19,8 +29,8 @@ public class RNControlAPI {
 		HttpResponse response = http.send(request);
 		if (response.getStatusCode() == 200) {
 			Map<String, Object> results = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
-			token = (String) results.get('token');
-			tokenExpires = (String) results.get('tokenExpires');
+			this.token = (String) results.get('token');
+			this.tokenExpires = (String) results.get('tokenExpires');
 			return true;
 		}
 		return false;
@@ -28,7 +38,43 @@ public class RNControlAPI {
 
 	private Boolean isAuthenticated() {
 		//TODO: Check tokenExpires
-		return authenticated;
+		return this.authenticated;
+	}
+
+	private Boolean fetchRouters() {
+		if (this.isAuthenticated()) {
+			Http http = new Http();
+			HttpRequest request = new HttpRequest();
+			request.setEndpoint('https://api.rncontrol.com/mr/search');
+			request.setMethod('POST');
+			request.setHeader('Content-Type', 'application/json;charset=UTF-8');
+			request.setHeader('Authorization', 'Bearer ' + token);
+			request.setBody('{"limit":"100", "type": "router"}');
+			HttpResponse response = http.send(request);
+			if (response.getStatusCode() == 200) {
+				List<Object> rncontrol_routers = (List<Object>) JSON.deserializeUntyped(response.getBody());
+				for (Object rncontrol_router : rncontrol_routers) {
+					Map<String, Object> rnr = (Map<String, Object>) rncontrol_router;
+					RNControlRouter temp_rnr = new RNControlRouter();
+					temp_rnr.setId((Integer) rnr.get('id'));
+					temp_rnr.setDomain((String) rnr.get('domain'));
+					temp_rnr.setMac((String) rnr.get('mac'));
+					temp_rnr.setMake((String) rnr.get('make'));
+					temp_rnr.setModel((String) rnr.get('model'));
+					temp_rnr.setName((String) rnr.get('name'));
+					temp_rnr.setSerial((String) rnr.get('serial'));
+					temp_rnr.setUrl((String) rnr.get('url'));
+					this.routers.add(temp_rnr);
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public List<RNControlRouter> getRouters() {
+		this.fetchRouters();
+		return this.routers;
 	}
 
 }

@@ -38,3 +38,11 @@ All Apex classes used in this project are saved in the "Apex_classes" folder. Th
 2. Click "File->New->Apex Class".
 3. Enter class name as filename and click "Ok".
 4. Enter the Apex class code in the editor and save.
+
+## Add Visualforce Pages
+All Visualforce pages used in this project are saved in the "Visualforce_pages" folder. They need to be added to Salesforce by following the steps below.
+
+1. Navigate to "Developer Console".
+2. Click "File->New->Visualforce Page".
+3. Enter the filename and click "Ok".
+4. Enter the code in the editor and save.
