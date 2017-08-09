@@ -1,0 +1,7 @@
+<apex:page controller="RNControlAPI">
+  <apex:form>
+    <apex:pageBlock title="Add Router" id="add_router">
+
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

@@ -4,12 +4,14 @@ public class RNControlAPI {
 	private String tokenExpires;
 	private Boolean authenticated;
 	private List<RNControlRouter> routers;
+	private Map<String, Object> lastError;
 
 	public RNControlAPI() {
 		this.authenticated = false;
 		this.token = '';
 		this.tokenExpires = '';
 		this.routers = new List<RNControlRouter>();
+		this.lastError = new Map<String, Object>();
 
 		User salesforce_user = [Select rncontrol_username__c, rncontrol_password__c From User Where Id = :UserInfo.getUserId() Limit 1];
 		String username = (String) salesforce_user.rncontrol_username__c;
@@ -75,6 +77,51 @@ public class RNControlAPI {
 	public List<RNControlRouter> getRouters() {
 		this.fetchRouters();
 		return this.routers;
+	}
+
+	private Boolean createRouter(String name, String serial, String mac) {
+		if (this.isAuthenticated()) {
+			Http http = new Http();
+			HttpRequest request = new HttpRequest();
+			request.setEndpoint('https://api.rncontrol.com/mr/add');
+			request.setMethod('POST');
+			request.setHeader('Content-Type', 'application/json;charset=UTF-8');
+			request.setHeader('Authorization', 'Bearer ' + token);
+			request.setBody('{"name": "' + name + '", "serial": "' + serial + '", "mac": "' + mac + '"}');
+			HttpResponse response = http.send(request);
+			if (response.getStatusCode() == 200) {
+				List<Object> rncontrol_routers = (List<Object>) JSON.deserializeUntyped(response.getBody());
+				for (Object rncontrol_router : rncontrol_routers) {
+					Map<String, Object> rnr = (Map<String, Object>) rncontrol_router;
+					RNControlRouter temp_rnr = new RNControlRouter();
+					temp_rnr.setId((Integer) rnr.get('id'));
+					temp_rnr.setDomain((String) rnr.get('domain'));
+					temp_rnr.setMac((String) rnr.get('mac'));
+					temp_rnr.setMake((String) rnr.get('make'));
+					temp_rnr.setModel((String) rnr.get('model'));
+					temp_rnr.setName((String) rnr.get('name'));
+					temp_rnr.setSerial((String) rnr.get('serial'));
+					temp_rnr.setUrl((String) rnr.get('url'));
+					this.routers.add(temp_rnr);
+				}
+				return true;
+			} else {
+				Map<String, Object> error_msg = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
+				this.lastError = error_msg;
+				this.routers = new List<RNControlRouter>();
+				return false;
+			}
+		}
+		return false;
+	}
+
+	public List<RNControlRouter> addRouter(String name, String serial, String mac) {
+		this.createRouter(name, serial, mac);
+		return this.routers;
+	}
+
+	public Map<String, Object> getLastError() {
+		return this.lastError;
 	}
 
 }
