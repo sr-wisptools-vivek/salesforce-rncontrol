@@ -38,6 +38,7 @@ All Apex classes used in this project are saved in the "Apex_classes" folder. Th
 2. Click "File->New->Apex Class".
 3. Enter class name as filename and click "Ok".
 4. Enter the Apex class code in the editor and save.
+5. Repeat above steps for all files in "Apex_classes" folder.
 
 ## Add Visualforce Pages
 All Visualforce pages used in this project are saved in the "Visualforce_pages" folder. They need to be added to Salesforce by following the steps below.
@@ -46,6 +47,7 @@ All Visualforce pages used in this project are saved in the "Visualforce_pages" 
 2. Click "File->New->Visualforce Page".
 3. Enter the filename and click "Ok".
 4. Enter the code in the editor and save.
+5. Repeat above steps for all files in "Visualforce_pages" folder.
 
 ## Create RN Control Salesforce Application
 To group all RN Control related tabs and features together, a new Salesforce application can be created. Follow the steps below to create a new Salesforce application.
@@ -74,3 +76,18 @@ This tab will display the "ListRNControlRouters" Visualforce page. To create the
     5. Select the profiles who should have access to this page.
     6. In the "Add to Custom Apps" section, check the new RN Control (RN_Control) app.
 5. After saving, the new Managed Routers tab will appear in the RN Control application page.
+
+## Create Add Managed Router Custom tab
+This tab will display the "AddRNControlRouter" Visualforce page. To create the tab, follow the steps below.
+
+1. Navigate to "Setup" page. (Top right)
+2. Click "Build->Create->Tabs" (Left Menu)
+3. In the "Visualforce Tabs" section, click the "New" button.
+4. Use the following settings.
+    1. Visualforce Page: AddRNControlRouter
+    2. Tab Label: Add Managed Router
+    3. Tab Name: Add_Managed_Router
+    4. Tab Style: Choose any
+    5. Select the profiles who should have access to this page.
+    6. In the "Add to Custom Apps" section, check the new RN Control (RN_Control) app.
+5. After saving, the new Add Managed Router tab will appear in the RN Control application page.

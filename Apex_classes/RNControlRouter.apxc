@@ -73,4 +73,12 @@ public class RNControlRouter {
     this.url = url;
   }
 
+  public void saveRouter() {
+    String name = this.getName();
+    String serial = this.getSerial();
+    String mac = this.getMac();
+    RNControlAPI rp = new RNControlAPI();
+    rp.addRouter(name, serial, mac);
+  }
+
 }

@@ -1,7 +1,23 @@
-<apex:page controller="RNControlAPI">
+<apex:page controller="RNControlRouter">
   <apex:form>
     <apex:pageBlock title="Add Router" id="add_router">
-
+      <table>
+        <tr>
+          <th>Name</th>
+          <td><apex:inputText value="{! name }"/></td>
+        </tr>
+        <tr>
+          <th>Serial</th>
+          <td><apex:inputText value="{! serial }"/></td>
+        </tr>
+        <tr>
+          <th>Mac</th>
+          <td><apex:inputText value="{! mac }"/></td>
+        </tr>
+        <tr>
+          <th colspan="2"><apex:commandButton value="Save" action="{! saveRouter }"/></th>
+        </tr>
+      </table>
     </apex:pageBlock>
   </apex:form>
 </apex:page>
