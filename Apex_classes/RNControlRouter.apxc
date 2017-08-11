@@ -77,8 +77,35 @@ public class RNControlRouter {
     String name = this.getName();
     String serial = this.getSerial();
     String mac = this.getMac();
-    RNControlAPI rp = new RNControlAPI();
-    rp.addRouter(name, serial, mac);
+    Boolean validation_error_flag = false;
+
+    if (name == '' || name == null) {
+      validation_error_flag = true;
+      ApexPages.addmessage(new ApexPages.message(ApexPages.severity.FATAL, 'Please enter name.'));
+    }
+    if (serial == '' || serial == null) {
+      validation_error_flag = true;
+      ApexPages.addmessage(new ApexPages.message(ApexPages.severity.FATAL, 'Please enter router serial number.'));
+    }
+    if (mac == '' || mac == null) {
+      validation_error_flag = true;
+      ApexPages.addmessage(new ApexPages.message(ApexPages.severity.FATAL, 'Please enter router mac.'));
+    }
+
+    if (validation_error_flag != true) {
+      RNControlAPI rp = new RNControlAPI();
+      Boolean res = rp.addRouter(name, serial, mac);
+      if (res) {
+        ApexPages.addmessage(new ApexPages.message(ApexPages.severity.CONFIRM, 'New router added successfully.'));
+        this.setName('');
+        this.setSerial('');
+        this.setMac('');
+      } else {
+        Map<String, Object> error = rp.getLastError();
+        String reason = (String) error.get('reason');
+        ApexPages.addmessage(new ApexPages.message(ApexPages.severity.FATAL, reason));
+      }
+    }
   }
 
 }

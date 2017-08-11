@@ -1,6 +1,7 @@
 <apex:page controller="RNControlRouter">
   <apex:form>
     <apex:pageBlock title="Add Router" id="add_router">
+      <apex:pageMessages id="showmsg"></apex:pageMessages>
       <table>
         <tr>
           <th>Name</th>

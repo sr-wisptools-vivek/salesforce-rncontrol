@@ -115,9 +115,8 @@ public class RNControlAPI {
 		return false;
 	}
 
-	public List<RNControlRouter> addRouter(String name, String serial, String mac) {
-		this.createRouter(name, serial, mac);
-		return this.routers;
+	public Boolean addRouter(String name, String serial, String mac) {
+		return this.createRouter(name, serial, mac);
 	}
 
 	public Map<String, Object> getLastError() {
