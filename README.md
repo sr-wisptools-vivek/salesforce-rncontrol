@@ -31,6 +31,78 @@ Managed Router section in Sales Force
     3. Active: Keep it checked
 4. Click "Save".
 
+## Create Managed Router Custom Object
+1. Navigate to "Setup" page. (Top right)
+2. Click "Build->Create->Objects" (Left Menu)
+3. Click the "New Custom Object" button and fill in the following details.
+    1. Label: Managed Router
+    2. Plural Label: Managed Routers
+    3. Object Name: Managed_Router
+    4. Record Name: Name
+    5. Data Type: Text
+4. Click "Save" button.
+
+#### Add Fields to Managed Router Custom Object
+1. Navigate to "Setup" page. (Top right)
+2. Click "Build->Create->Objects" (Left Menu)
+3. Click "Managed Router" from the list.
+4. Under the "Custom Fields & Relationships" section, click the "New" button. (Repeat these steps to create the following fields).
+    1. **RNControlID**
+        1. Data Type: Number
+        2. Length: 18
+        3. Decimal Places: 0
+        4. Field Name: RNControlID
+        5. Required, Unique, External ID: Checked
+        6. Keep default values for all other fields and save.
+    2. **Domain**
+        1. Data Type: Text
+        2. Field Label: Domain
+        3. Length: 255
+        4. Field Name: Domain
+        5. Required: Checked
+        6. Keep default values for all other fields and save.
+    3. **Serial**
+        1. Data Type: Text
+        2. Field Label: Serial
+        3. Length: 255
+        4. Field Name: Serial
+        5. Required: Checked
+        6. Keep default values for all other fields and save.
+    4. **Mac**
+        1. Data Type: Text
+        2. Field Label: Mac
+        3. Length: 255
+        4. Field Name: Mac
+        5. Required: Checked
+        6. Keep default values for all other fields and save.
+    5. **Make**
+        1. Data Type: Text
+        2. Field Label: Make
+        3. Length: 255
+        4. Field Name: Make
+        5. Required: Checked
+        6. Keep default values for all other fields and save.
+    6. **Model**
+        1. Data Type: Text
+        2. Field Label: Model
+        3. Length: 255
+        4. Field Name: Model
+        5. Required: Checked
+        6. Keep default values for all other fields and save.
+    7. **Url**
+        1. Data Type: URL
+        2. Field Label: Url
+        3. Field Name: Url
+        4. Required: Checked
+        5. Keep default values for all other fields and save.
+    8. **Contact**
+        1. Data Type: Lookup Relationship
+        2. Related To: Contact
+        3. Field Label: Contact
+        4. Field Name: Contact
+        5. Child Relationship Name: Managed_Routers
+        6. Keep default values for all other fields and save.
+
 ## Add Apex Classes
 All Apex classes used in this project are saved in the "Apex_classes" folder. They need to be added to Salesforce by following the steps below.
 
