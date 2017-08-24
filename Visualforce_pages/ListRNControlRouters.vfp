@@ -1,15 +1,16 @@
-<apex:page controller="RNControlAPI">
+<apex:page standardController="Managed_Router__c" recordSetVar="routers" extensions="RNControlAPI">
   <apex:form>
     <apex:pageBlock title="Managed Routers" id="managed_routers">
+      <apex:commandButton value="Sync" action="{! syncRouters }"/>
       <apex:pageBlockTable  value="{! routers }" var="rt">
-        <apex:column headerValue="Domain" value="{! rt.domain }"/>
-        <apex:column headerValue="Mac" value="{! rt.mac }"/>
-        <apex:column headerValue="Make" value="{! rt.make }"/>
-        <apex:column headerValue="Model" value="{! rt.model }"/>
-        <apex:column headerValue="Name" value="{! rt.name }"/>
-        <apex:column headerValue="Serial" value="{! rt.serial }"/>
+        <apex:column headerValue="Domain" value="{! rt.Domain__c }"/>
+        <apex:column headerValue="Mac" value="{! rt.Mac__c }"/>
+        <apex:column headerValue="Make" value="{! rt.Make__c }"/>
+        <apex:column headerValue="Model" value="{! rt.Model__c }"/>
+        <apex:column headerValue="Name" value="{! rt.Name }"/>
+        <apex:column headerValue="Serial" value="{! rt.Serial__c }"/>
         <apex:column headerValue="Action">
-          <apex:outputlink value="{! rt.url }" target="_blank">View</apex:outputlink>
+          <apex:outputlink value="{! rt.Url__c }" target="_blank">View</apex:outputlink>
         </apex:column>
       </apex:pageBlockTable>
     </apex:pageBlock>

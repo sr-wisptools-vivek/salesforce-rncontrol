@@ -3,14 +3,12 @@ public class RNControlAPI {
 	private String token;
 	private String tokenExpires;
 	private Boolean authenticated;
-	private List<RNControlRouter> routers;
 	private Map<String, Object> lastError;
 
-	public RNControlAPI() {
+	public RNControlAPI(ApexPages.StandardSetController stdSetController) {
 		this.authenticated = false;
 		this.token = '';
 		this.tokenExpires = '';
-		this.routers = new List<RNControlRouter>();
 		this.lastError = new Map<String, Object>();
 
 		User salesforce_user = [Select rncontrol_username__c, rncontrol_password__c From User Where Id = :UserInfo.getUserId() Limit 1];
@@ -55,28 +53,32 @@ public class RNControlAPI {
 			HttpResponse response = http.send(request);
 			if (response.getStatusCode() == 200) {
 				List<Object> rncontrol_routers = (List<Object>) JSON.deserializeUntyped(response.getBody());
+				List<Managed_Router__c> managedRouterList = new List<Managed_Router__c>();
 				for (Object rncontrol_router : rncontrol_routers) {
 					Map<String, Object> rnr = (Map<String, Object>) rncontrol_router;
-					RNControlRouter temp_rnr = new RNControlRouter();
-					temp_rnr.setId((Integer) rnr.get('id'));
-					temp_rnr.setDomain((String) rnr.get('domain'));
-					temp_rnr.setMac((String) rnr.get('mac'));
-					temp_rnr.setMake((String) rnr.get('make'));
-					temp_rnr.setModel((String) rnr.get('model'));
-					temp_rnr.setName((String) rnr.get('name'));
-					temp_rnr.setSerial((String) rnr.get('serial'));
-					temp_rnr.setUrl((String) rnr.get('url'));
-					this.routers.add(temp_rnr);
+					Managed_Router__c managedRouter = new Managed_Router__c();
+					managedRouter.RNControlID__c = (Integer) rnr.get('id');
+					managedRouter.Domain__c = (String) rnr.get('domain');
+					managedRouter.Mac__c = (String) rnr.get('mac');
+					managedRouter.Make__c = (String) rnr.get('make');
+					managedRouter.Model__c = (String) rnr.get('model');
+					managedRouter.Name = (String) rnr.get('name');
+					managedRouter.Serial__c = (String) rnr.get('serial');
+					managedRouter.Url__c = (String) rnr.get('url');
+					managedRouterList.add(managedRouter);
 				}
+				upsert managedRouterList Managed_Router__c.Fields.RNControlID__c;
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public List<RNControlRouter> getRouters() {
+	public PageReference syncRouters() {
 		this.fetchRouters();
-		return this.routers;
+		PageReference pageRef = new PageReference(ApexPages.currentPage().getUrl());
+		pageRef.setRedirect(true);
+		return pageRef;
 	}
 
 	private Boolean createRouter(String name, String serial, String mac) {
@@ -93,22 +95,21 @@ public class RNControlAPI {
 				List<Object> rncontrol_routers = (List<Object>) JSON.deserializeUntyped(response.getBody());
 				for (Object rncontrol_router : rncontrol_routers) {
 					Map<String, Object> rnr = (Map<String, Object>) rncontrol_router;
-					RNControlRouter temp_rnr = new RNControlRouter();
-					temp_rnr.setId((Integer) rnr.get('id'));
-					temp_rnr.setDomain((String) rnr.get('domain'));
-					temp_rnr.setMac((String) rnr.get('mac'));
-					temp_rnr.setMake((String) rnr.get('make'));
-					temp_rnr.setModel((String) rnr.get('model'));
-					temp_rnr.setName((String) rnr.get('name'));
-					temp_rnr.setSerial((String) rnr.get('serial'));
-					temp_rnr.setUrl((String) rnr.get('url'));
-					this.routers.add(temp_rnr);
+					Managed_Router__c managedRouter = new Managed_Router__c();
+					managedRouter.RNControlID__c = (Integer) rnr.get('id');
+					managedRouter.Domain__c = (String) rnr.get('domain');
+					managedRouter.Mac__c = (String) rnr.get('mac');
+					managedRouter.Make__c = (String) rnr.get('make');
+					managedRouter.Model__c = (String) rnr.get('model');
+					managedRouter.Name = (String) rnr.get('name');
+					managedRouter.Serial__c = (String) rnr.get('serial');
+					managedRouter.Url__c = (String) rnr.get('url');
+					insert managedRouter;
 				}
 				return true;
 			} else {
 				Map<String, Object> error_msg = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
 				this.lastError = error_msg;
-				this.routers = new List<RNControlRouter>();
 				return false;
 			}
 		}
