@@ -1,4 +1,4 @@
-<apex:page standardController="Managed_Router__c" recordSetVar="routers" extensions="RNControlAPI">
+<apex:page standardController="Managed_Router__c" recordSetVar="routers" extensions="ManagedRouterSetExtensions">
   <apex:form>
     <apex:pageBlock title="Managed Routers" id="managed_routers">
       <apex:commandButton value="Sync" action="{! syncRouters }"/>

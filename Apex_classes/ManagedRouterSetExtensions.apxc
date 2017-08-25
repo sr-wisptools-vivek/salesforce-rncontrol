@@ -1,0 +1,15 @@
+public class ManagedRouterSetExtensions {
+
+  public ManagedRouterSetExtensions(ApexPages.StandardSetController stdSetController) {
+
+  }
+
+  public PageReference syncRouters() {
+    RNControlAPI rp = new RNControlAPI();
+    rp.syncRouters();
+    PageReference pageRef = new PageReference(ApexPages.currentPage().getUrl());
+    pageRef.setRedirect(true);
+    return pageRef;
+  }
+
+}

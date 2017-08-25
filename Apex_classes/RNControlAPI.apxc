@@ -5,7 +5,7 @@ public class RNControlAPI {
 	private Boolean authenticated;
 	private Map<String, Object> lastError;
 
-	public RNControlAPI(ApexPages.StandardSetController stdSetController) {
+	public RNControlAPI() {
 		this.authenticated = false;
 		this.token = '';
 		this.tokenExpires = '';
@@ -74,11 +74,8 @@ public class RNControlAPI {
 		return false;
 	}
 
-	public PageReference syncRouters() {
-		this.fetchRouters();
-		PageReference pageRef = new PageReference(ApexPages.currentPage().getUrl());
-		pageRef.setRedirect(true);
-		return pageRef;
+	public Boolean syncRouters() {
+		return this.fetchRouters();
 	}
 
 	private Boolean createRouter(String name, String serial, String mac) {
