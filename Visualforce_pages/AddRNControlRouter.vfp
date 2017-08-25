@@ -1,19 +1,19 @@
-<apex:page controller="RNControlRouter">
+<apex:page standardController="Managed_Router__c" extensions="ManagedRouterExtensions">
   <apex:form>
     <apex:pageBlock title="Add Router" id="add_router">
       <apex:pageMessages id="showmsg"></apex:pageMessages>
       <table>
         <tr>
           <th>Name</th>
-          <td><apex:inputText value="{! name }"/></td>
+          <td><apex:inputText value="{! Managed_Router__c.Name }"/></td>
         </tr>
         <tr>
           <th>Serial</th>
-          <td><apex:inputText value="{! serial }"/></td>
+          <td><apex:inputText value="{! Managed_Router__c.Serial__c }"/></td>
         </tr>
         <tr>
           <th>Mac</th>
-          <td><apex:inputText value="{! mac }"/></td>
+          <td><apex:inputText value="{! Managed_Router__c.Mac__c }"/></td>
         </tr>
         <tr>
           <th colspan="2"><apex:commandButton value="Save" action="{! saveRouter }"/></th>
